@@ -1,5 +1,4 @@
 package com.SimpleProject.SpringCrud.Controller;
-
 import com.SimpleProject.SpringCrud.Model.CustomerModel;
 import com.SimpleProject.SpringCrud.Service.CustomerService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,11 +22,14 @@ public class CustomerController {
 
 
     @PostMapping("/create")
-    @ResponseBody
+
     public String createCustomer(@RequestParam("name") String name,
                                  @RequestParam("email") String email,
                                  @RequestParam("phone") String phone,
-                                 @RequestParam("address") String address) {
+                                 @RequestParam("address") String address
+                                 //Model model
+                                 )
+    {
 
         CustomerModel customer = new CustomerModel();
         customer.setName(name);
@@ -36,8 +38,10 @@ public class CustomerController {
         customer.setAddress(address);
 
         customerService.addCustomer(customer);
-
-        return "User Created";
+        //Add Succss Message
+      //  model.addAttribute("key","Customer Added Successfully");
+        //returning the addCustomer.jsp
+        return "Customer Added Successfully";
     }
 
     @GetMapping("/read")
