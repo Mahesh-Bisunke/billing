@@ -4,6 +4,8 @@ import com.SimpleProject.SpringCrud.Model.CustomerModel;
 import com.SimpleProject.SpringCrud.Model.ProductModel;
 import com.SimpleProject.SpringCrud.Repository.CustomerRepository;
 import com.SimpleProject.SpringCrud.Repository.ProductRepository;
+import com.SimpleProject.SpringCrud.dto.ProductDTO;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +19,18 @@ public class ProductService {
 
     private ProductRepository productRepository;
 
-    public void addProduct(ProductModel productModel) {
-        productRepository.save(productModel);
+    @Autowired
+    private ModelMapper modelMapper;
 
+//    public void addProduct(ProductModel productModel) {
+//        productRepository.save(productModel);
+//
+//    }
+
+    //adding products
+    public ProductModel addProduct(ProductDTO productDTO) {
+       ProductModel productModel= modelMapper.map(productDTO, ProductModel.class);
+       return  productRepository.save(productModel);
     }
 
     public List<ProductModel> readAllProduct() {

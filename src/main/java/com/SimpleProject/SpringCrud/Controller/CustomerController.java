@@ -31,30 +31,6 @@ public class CustomerController {
 
 
 
-    //@PostMapping("/create")
-
-//    public String createCustomer(@RequestParam("name") String name,
-//                                 @RequestParam("email") String email,
-//                                 @RequestParam("phone") String phone,
-//                                 @RequestParam("address") String address
-//                                 //Model model
-//                                 )
-//    {
-//
-//        CustomerModel customer = new CustomerModel();
-//        customer.setName(name);
-//        customer.setEmail(email);
-//        customer.setPhone(phone);
-//        customer.setAddress(address);
-//
-//        customerService.addCustomer(customer);
-//        //Add Succss Message
-//      //  model.addAttribute("key","Customer Added Successfully");
-//        //returning the addCustomer.jsp
-//        return "Customer Added Successfully";
-//    }
-
-
 
     //validating the customer
 
