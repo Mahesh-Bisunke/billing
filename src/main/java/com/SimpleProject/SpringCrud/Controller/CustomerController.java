@@ -34,37 +34,44 @@ public class CustomerController {
 
     //validating the customer
 
-    @PostMapping("/customer/create")
-    public ResponseEntity<?> createCustomer(@Valid @RequestBody CustomerDTO customerDTO,
-                                            BindingResult bindingResult) {
 
-        //  Handle field validation errors first
-        if (bindingResult.hasErrors()) {
-            List<String> list = new ArrayList<>();
-            for (ObjectError objectError : bindingResult.getAllErrors()) {
-                list.add(objectError.getDefaultMessage());
-            }
-            return new ResponseEntity<>(list, HttpStatus.BAD_REQUEST);
-        }
+@PostMapping("/create")
+public ResponseEntity<?> createCustomer(@Valid @RequestBody CustomerDTO customerDTO,
+                                        BindingResult bindingResult) {
 
-        // Check uniqueness of phone and email
-        if (customerService.existsByPhone(customerDTO.getPhone())) {
-            return new ResponseEntity<>("Phone number already used!", HttpStatus.BAD_REQUEST);
-        }
-
-        if (customerService.existsByEmail(customerDTO.getEmail())) {
-            return new ResponseEntity<>("Email already used!", HttpStatus.BAD_REQUEST);
-        }
-
-        // Save the customer
-        CustomerModel addedCustomer = customerService.addCustomer(customerDTO);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "Customer Added Successfully");
-        response.put("customer", addedCustomer);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    // Field-specific validation errors
+    if (bindingResult.hasErrors()) {
+        Map<String, String> errors = new HashMap<>();
+        bindingResult.getFieldErrors().forEach(fieldError -> {
+            errors.put(fieldError.getField(), fieldError.getDefaultMessage());
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    // Custom uniqueness checks
+    Map<String, String> customErrors = new HashMap<>();
+    if (customerService.existsByEmail(customerDTO.getEmail())) {
+        customErrors.put("email", "Email already used!");
+    }
+    if (customerService.existsByPhone(customerDTO.getPhone())) {
+        customErrors.put("phone", "Phone number already used!");
+    }
+    if (!customErrors.isEmpty()) {
+        return new ResponseEntity<>(customErrors, HttpStatus.BAD_REQUEST);
+    }
+
+    // Save customer
+    CustomerModel addedCustomer = customerService.addCustomer(customerDTO);
+
+    Map<String, Object> response = new HashMap<>();
+    response.put("message", "Customer Added Successfully");
+    response.put("customer", addedCustomer);
+
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
+}
+
+
+
 
 
 

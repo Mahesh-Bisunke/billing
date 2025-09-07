@@ -13,17 +13,17 @@ public class HomeController {
 
     @GetMapping("/customer")
     public String customerPage() {
-        return "customer";
+        return "allCustomers";
     }
 
     @GetMapping("/product")
     public String productPage() {
-        return "product";
+        return "allProducts";
     }
 
     @GetMapping("/invoice")
     public String invoicePage() {
-        return "invoice";
+        return "allInvoices";
     }
 
     @GetMapping("/addCustomers")

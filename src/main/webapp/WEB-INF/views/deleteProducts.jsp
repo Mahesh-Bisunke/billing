@@ -90,7 +90,7 @@
         <input type="number" id="id" name="id" placeholder="Enter Product ID" required />
         <button type="submit">Delete Product</button>
 
-    <a href="/product" class="back-link">Back to Product Page</a>
+        <a href="/product" class="back-link">Back to Product Page</a>
     </form>
 </div>
 </body>

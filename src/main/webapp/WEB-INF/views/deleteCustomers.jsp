@@ -90,7 +90,7 @@
         <input type="number" id="id" name="id" placeholder="Enter Customer ID" required />
         <button type="submit">Delete Customer</button>
 
-    <a href="/customer" class="back-link">Back to Customer Page</a>
+        <a href="/customer" class="back-link">Back to Customer Page</a>
     </form>
 </div>
 </body>

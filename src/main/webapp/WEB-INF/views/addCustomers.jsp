@@ -1,100 +1,159 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Add Customer</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: #F7F4EA;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
             margin: 0;
             padding: 0;
         }
 
-        .content {
-            padding: 15px 180px;
-            margin-top: -140px;
-        }
-
-        h1 {
+        h2 {
             text-align: center;
-            color: #2F3E2F;
-            margin-bottom: 30px;
+            margin-top: 30px;
+            color: #333;
         }
 
-        .add-product-form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .add-product-form input {
-            width: 320px;
-            padding: 14px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            outline: none;
-            transition: 0.3s ease;
-        }
-
-        .add-product-form input:focus {
-            border-color: #A8BBA3;
-            box-shadow: 0 0 5px rgba(168,187,163,0.6);
-        }
-
-        .add-product-form button {
-            background-color: #A8BBA3;
-            color: #2F3E2F;
-            font-weight: bold;
-            border: none;
-            padding: 14px 28px;
+        #customerForm {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #fff;
             border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .success {
+            color: #2ecc71;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: background 0.3s ease;
         }
 
-        .add-product-form button:hover {
-            background-color: #FFF0CE;
+        button:hover {
+            background: #2980b9;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 18px;
-            background-color: #A8BBA3;
-            color: #2F3E2F;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .back-link:hover {
-            background-color: #FFF0CE;
+        span.field-container {
+            margin-bottom: 15px;
+            display: block;
         }
     </style>
 </head>
 <body>
-<jsp:include page="home.jsp"/>
 
-<div class="content">
-    <h1>Add New Customer</h1>
+<h2>Add Customer</h2>
 
-    <form class="add-product-form" action="/api/create" method="post">
-        <input type="text" name="name" placeholder="Name" required /><br>
-        <input type="email" name="email" placeholder="Email" required /><br>
-        <input type="text" name="phone" placeholder="Phone" required /><br>
-        <input type="text" name="address" placeholder="Address" required /><br>
-        <button type="submit">Add Customer</button>
-    </form>
+<div id="successMessage" class="success"></div>
 
-    <div style="text-align:center;">
-        <a href="/customer" class="back-link">Back to Customers Page</a>
-    </div>
-</div>
+<form id="customerForm">
+    <span class="field-container">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name">
+        <span id="nameError" class="error"></span>
+    </span>
+
+    <span class="field-container">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" >
+        <span id="emailError" class="error"></span>
+    </span>
+
+    <span class="field-container">
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone">
+        <span id="phoneError" class="error"></span>
+    </span>
+
+    <span class="field-container">
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address">
+        <span id="addressError" class="error"></span>
+    </span>
+
+    <button type="button" id="submitBtn">Add Customer</button>
+</form>
+
+<script>
+    $(document).ready(function() {
+        $('#submitBtn').click(function() {
+            $('span.error').text('');
+            $('#successMessage').text('');
+
+            const customerData = {
+                name: $('#name').val(),
+                email: $('#email').val(),
+                phone: $('#phone').val(),
+                address: $('#address').val()
+            };
+
+            $.ajax({
+                url: '/api/create',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(customerData),
+                success: function(response) {
+                    $('#successMessage').text(response.message);
+                    $('#customerForm')[0].reset();
+                },
+                error: function(xhr) {
+                    const errors = xhr.responseJSON;
+
+                    if (Array.isArray(errors)) {
+                        errors.forEach(function(err) {
+                            $('#successMessage').text(err);
+                        });
+                    } else {
+                        for (const field in errors) {
+                            $('#' + field + 'Error').text(errors[field]);
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>

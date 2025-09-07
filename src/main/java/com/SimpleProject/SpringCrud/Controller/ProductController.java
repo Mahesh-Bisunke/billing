@@ -5,7 +5,9 @@ import com.SimpleProject.SpringCrud.Model.ProductModel;
 import com.SimpleProject.SpringCrud.Service.CustomerService;
 import com.SimpleProject.SpringCrud.Service.ProductService;
 import com.SimpleProject.SpringCrud.dto.ProductDTO;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
+import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +18,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/api")
@@ -28,23 +27,30 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private final Validator validator; // inject Spring Validator
 
-
+    public ProductController(ProductService productService, Validator validator) {
+        this.productService = productService;
+        this.validator = validator;
+    }
 
     @PostMapping("/product/create")
-    public ResponseEntity<?> createProduct(@Valid @RequestBody ProductDTO productDTO,
-                                           BindingResult bindingResult) {
+    public ResponseEntity<?> createProduct(@RequestBody @Valid ProductDTO productDTO) {
 
-        //  Handle validation errors
-        if (bindingResult.hasErrors()) {
-            List<String> errors = new ArrayList<>();
-            for (ObjectError objectError : bindingResult.getAllErrors()) {
-                errors.add(objectError.getDefaultMessage());
+        // Manual validation
+        Set<ConstraintViolation<ProductDTO>> violations = validator.validate(productDTO);
+
+        if (!violations.isEmpty()) {
+            Map<String, String> errors = new HashMap<>();
+            for (ConstraintViolation<ProductDTO> violation : violations) {
+                String field = violation.getPropertyPath().toString();
+                errors.put(field, violation.getMessage());
             }
             return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         }
 
-        // Save the product
+        // Save product
         ProductModel addedProduct = productService.addProduct(productDTO);
 
         Map<String, Object> response = new HashMap<>();
@@ -53,6 +59,9 @@ public class ProductController {
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+
+
 
 
     @GetMapping("readP")
