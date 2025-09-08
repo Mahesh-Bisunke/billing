@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping("/api")
 
 public class CustomerController {
@@ -75,11 +75,15 @@ public ResponseEntity<?> createCustomer(@Valid @RequestBody CustomerDTO customer
 
 
 
+
+
+
+
     @GetMapping("/read")
-    public String readCustomer(Model model) {
-        List<CustomerModel> customers = customerService.readAllCustomer();
-        model.addAttribute("customers", customers);
-        return "allCustomers";
+    public String getAllCustomers(Model model) {
+        List<CustomerModel> customers = customerService.getAllCustomers();
+        model.addAttribute("customers", customers); // send to JSP
+        return "allCustomers"; // JSP name
     }
 
 

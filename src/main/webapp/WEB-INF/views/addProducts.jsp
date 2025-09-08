@@ -1,100 +1,157 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Add Product</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
-        h2 { text-align: center; margin-top: 30px; color: #333; }
-        #productForm { max-width: 500px; margin: 40px auto; padding: 30px; background: #fff; border-radius: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
-        label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
-        input[type="text"], input[type="number"] { width: 100%; padding: 10px; margin-bottom: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px; }
-        input.error-input { border-color: #e74c3c; }
-        .error { color: #e74c3c; font-size: 13px; margin-bottom: 10px; display: block; }
-        .success { color: #2ecc71; font-size: 16px; text-align: center; margin-bottom: 20px; }
-        button { width: 100%; padding: 12px; background: #3498db; color: #fff; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background 0.3s ease; }
-        button:hover { background: #2980b9; }
-        span.field-container { margin-bottom: 15px; display: block; }
-    </style>
-</head>
-<body>
+<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
+<%--<!DOCTYPE html>--%>
+<%--<html>--%>
+<%--<head>--%>
+<%--    <meta charset="UTF-8">--%>
+<%--    <title>Add Product</title>--%>
+<%--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>--%>
+<%--    <script src="https://cdn.tailwindcss.com"></script>--%>
+<%--    <style>--%>
+<%--        /* Slide-in animation for toast */--%>
+<%--        @keyframes slideIn {--%>
+<%--            0% { transform: translateX(100%); opacity: 0; }--%>
+<%--            100% { transform: translateX(0); opacity: 1; }--%>
+<%--        }--%>
+<%--        .animate-slideIn { animation: slideIn 0.3s ease-out; }--%>
+<%--    </style>--%>
+<%--</head>--%>
+<%--<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center">--%>
 
-<h2>Add Product</h2>
+<%--<!-- Button to open modal -->--%>
+<%--<button id="openModalBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition mt-10">--%>
+<%--    Add Product--%>
+<%--</button>--%>
 
-<div id="successMessage" class="success"></div>
+<%--<!-- Modal -->--%>
+<%--<div id="productModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">--%>
+<%--    <div class="bg-white w-full max-w-md rounded-2xl shadow-lg p-6 relative">--%>
+<%--        <button id="closeModalBtn" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800">&times;</button>--%>
+<%--        <h2 class="text-xl font-bold mb-4 text-center">Add Product</h2>--%>
 
-<form id="productForm">
-    <span class="field-container">
-        <label for="name">Product Name:</label>
-        <input type="text" id="name" name="name">
-        <span id="nameError" class="error"></span>
-    </span>
+<%--        <form id="productForm" class="space-y-5">--%>
+<%--            <div>--%>
+<%--                <label for="name" class="block text-gray-700 font-semibold">Product Name</label>--%>
+<%--                <input type="text" id="name" name="name"--%>
+<%--                       class="w-full mt-1 p-2 border rounded-md focus:ring focus:ring-blue-300" />--%>
+<%--                <span id="nameError" class="text-red-500 text-sm"></span>--%>
+<%--            </div>--%>
 
-    <span class="field-container">
-        <label for="description">Description:</label>
-        <input type="text" id="description" name="description">
-        <span id="descriptionError" class="error"></span>
-    </span>
+<%--            <div>--%>
+<%--                <label for="description" class="block text-gray-700 font-semibold">Description</label>--%>
+<%--                <input type="text" id="description" name="description"--%>
+<%--                       class="w-full mt-1 p-2 border rounded-md focus:ring focus:ring-blue-300" />--%>
+<%--                <span id="descriptionError" class="text-red-500 text-sm"></span>--%>
+<%--            </div>--%>
 
-    <span class="field-container">
-        <label for="price">Price:</label>
-        <input type="number" id="price" name="price" step="0.01">
-        <span id="priceError" class="error"></span>
-    </span>
+<%--            <div>--%>
+<%--                <label for="price" class="block text-gray-700 font-semibold">Price</label>--%>
+<%--                <input type="number" id="price" name="price" step="0.01"--%>
+<%--                       class="w-full mt-1 p-2 border rounded-md focus:ring focus:ring-blue-300" />--%>
+<%--                <span id="priceError" class="text-red-500 text-sm"></span>--%>
+<%--            </div>--%>
 
-    <span class="field-container">
-        <label for="stockQuantity">Stock Quantity:</label>
-        <input type="number" id="stockQuantity" name="stockQuantity">
-        <span id="stockQuantityError" class="error"></span>
-    </span>
+<%--            <div>--%>
+<%--                <label for="stockQuantity" class="block text-gray-700 font-semibold">Stock Quantity</label>--%>
+<%--                <input type="number" id="stockQuantity" name="stockQuantity"--%>
+<%--                       class="w-full mt-1 p-2 border rounded-md focus:ring focus:ring-blue-300" />--%>
+<%--                <span id="stockQuantityError" class="text-red-500 text-sm"></span>--%>
+<%--            </div>--%>
 
-    <button type="button" id="submitBtn">Submit</button>
-</form>
+<%--            <button type="button" id="submitBtn"--%>
+<%--                    class="w-full py-2 px-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition">--%>
+<%--                Submit--%>
+<%--            </button>--%>
+<%--        </form>--%>
+<%--    </div>--%>
+<%--</div>--%>
 
-<script>
-    $(document).ready(function() {
-        $('#submitBtn').click(function() {
-            // Clear previous errors
-            $('span.error').text('');
-            $('input').removeClass('error-input');
-            $('#successMessage').text('');
+<%--<!-- Toast Container -->--%>
+<%--<div id="toast-container" class="fixed top-5 right-5 space-y-3 z-50"></div>--%>
 
-            const productData = {
-                name: $('#name').val() || null,
-                description: $('#description').val() || null,
-                price: $('#price').val() ? parseFloat($('#price').val()) : null,
-                stockQuantity: $('#stockQuantity').val() ? parseInt($('#stockQuantity').val()) : null
-            };
+<%--<script>--%>
+<%--    $(document).ready(function () {--%>
 
-            $.ajax({
-                url: '/api/product/create',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(productData),
-                success: function(response) {
-                    $('#successMessage').text(response.message);
-                    $('#productForm')[0].reset();
-                },
-                error: function(xhr) {
-                    const errors = xhr.responseJSON;
+<%--        // Open modal--%>
+<%--        $('#openModalBtn').click(function() {--%>
+<%--            $('#productModal').removeClass('hidden');--%>
+<%--        });--%>
 
-                    if (errors && typeof errors === 'object') {
-                        // Field-specific errors
-                        for (const field in errors) {
-                            $('#' + field + 'Error').text(errors[field]);
-                            $('#' + field).addClass('error-input');
-                        }
-                    } else if (Array.isArray(errors)) {
-                        // General errors
-                        $('#successMessage').text(errors.join(', '));
-                    }
-                }
-            });
-        });
-    });
-</script>
+<%--        // Close modal--%>
+<%--        $('#closeModalBtn').click(function() {--%>
+<%--            $('#productModal').addClass('hidden');--%>
+<%--            $('#productForm')[0].reset();--%>
+<%--            $('span.text-red-500').text('');--%>
+<%--            $('input').removeClass('border-red-500');--%>
+<%--        });--%>
 
-</body>
-</html>
+<%--        // Toast function--%>
+<%--        function showToast(message, type = "success") {--%>
+<%--            const bgColor = type === "success"--%>
+<%--                ? "bg-green-50 text-green-700 border border-green-300"--%>
+<%--                : "bg-red-50 text-red-700 border border-red-300";--%>
+
+<%--            const icon = type === "success"--%>
+<%--                ? `<svg class="w-5 h-5 text-green-600 rotate-45" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">--%>
+<%--                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"--%>
+<%--                         d="m9 17 8 2L9 1 1 19l8-2Zm0 0V9"/>--%>
+<%--               </svg>`--%>
+<%--                : `<svg class="w-5 h-5 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">--%>
+<%--                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"--%>
+<%--                         d="M12 9v4m0 4h.01M21 12A9 9 0 1 1 3 12a9 9 0 0 1 18 0Z"/>--%>
+<%--               </svg>`;--%>
+
+<%--            const toast = $(`--%>
+<%--            <div class="flex items-center w-full max-w-xs p-4 space-x-3 rounded-lg shadow ${bgColor} animate-slideIn" role="alert">--%>
+<%--                ${icon}--%>
+<%--                <span class="text-sm font-medium">${message}</span>--%>
+<%--            </div>--%>
+<%--        `);--%>
+
+<%--            $("#toast-container").append(toast);--%>
+
+<%--            setTimeout(() => {--%>
+<%--                toast.fadeOut("slow", function () { $(this).remove(); });--%>
+<%--            }, 5000);--%>
+<%--        }--%>
+
+<%--        // Submit form--%>
+<%--        $('#submitBtn').click(function () {--%>
+<%--            $('span.text-red-500').text('');--%>
+<%--            $('input').removeClass('border-red-500');--%>
+
+<%--            const productData = {--%>
+<%--                name: $('#name').val() || null,--%>
+<%--                description: $('#description').val() || null,--%>
+<%--                price: $('#price').val() ? parseFloat($('#price').val()) : null,--%>
+<%--                stockQuantity: $('#stockQuantity').val() ? parseInt($('#stockQuantity').val()) : null--%>
+<%--            };--%>
+
+<%--            $.ajax({--%>
+<%--                url: '/api/product/create',--%>
+<%--                type: 'POST',--%>
+<%--                contentType: 'application/json',--%>
+<%--                data: JSON.stringify(productData),--%>
+<%--                success: function (response) {--%>
+<%--                    showToast("Product Added Successfully", "success");--%>
+<%--                    $('#productForm')[0].reset();--%>
+<%--                    $('#productModal').addClass('hidden');--%>
+<%--                },--%>
+<%--                error: function (xhr) {--%>
+<%--                    const errors = xhr.responseJSON;--%>
+<%--                    if (errors && typeof errors === 'object') {--%>
+<%--                        if (errors.name) { $('#nameError').text(errors.name); $('#name').addClass('border-red-500'); }--%>
+<%--                        if (errors.description) { $('#descriptionError').text(errors.description); $('#description').addClass('border-red-500'); }--%>
+<%--                        if (errors.price) { $('#priceError').text(errors.price); $('#price').addClass('border-red-500'); }--%>
+<%--                        if (errors.stockQuantity) { $('#stockQuantityError').text(errors.stockQuantity); $('#stockQuantity').addClass('border-red-500'); }--%>
+<%--                    } else {--%>
+<%--                        showToast("Something went wrong!", "error");--%>
+<%--                    }--%>
+<%--                }--%>
+<%--            });--%>
+<%--        });--%>
+
+<%--    });--%>
+<%--</script>--%>
+
+<%--</body>--%>
+<%--</html>--%>
