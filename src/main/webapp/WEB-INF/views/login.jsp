@@ -34,6 +34,12 @@
             Login
         </button>
     </form>
+
+    <!-- Signup link -->
+    <p class="text-center text-sm text-gray-600 mt-4">
+        Don't have an account?
+        <a href="/signup" class="text-blue-600 hover:underline">Sign up here</a>
+    </p>
 </div>
 
 </body>
