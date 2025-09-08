@@ -64,7 +64,7 @@ public class ProductController {
 
 
 
-    @GetMapping("readP")
+    @GetMapping("/readP")
     public String readProduct(Model model) {
         List<ProductModel> products = productService.readAllProduct();
         model.addAttribute("products", products);
