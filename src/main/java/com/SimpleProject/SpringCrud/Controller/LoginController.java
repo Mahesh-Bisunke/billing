@@ -1,6 +1,5 @@
 package com.SimpleProject.SpringCrud.Controller;
 
-
 import com.SimpleProject.SpringCrud.Model.UserModel;
 import com.SimpleProject.SpringCrud.Service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -15,16 +14,31 @@ public class LoginController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private UserService userService;
 
-    // show login page
+    // Show login page
     @GetMapping("/login")
-    public String showLoginPage() {
+    public String showLoginPage(HttpSession session) {
+        if (session.getAttribute("loggedInUser") != null) {
+            // Already logged in, redirect to dashboard
+            return "redirect:/dashboard";
+        }
         return "login"; // JSP page
     }
 
-    // process login
+    @GetMapping("/dashboard")
+    public String showDashboard(HttpSession session) {
+        // If user is not logged in, redirect to login
+        if (session.getAttribute("loggedInUser") == null) {
+            return "redirect:/login";
+        }
+        return "dashboard"; // this should match the JSP name
+    }
+
+
+    // Process login
     @PostMapping("/login")
     public String loginUser(@RequestParam String username,
                             @RequestParam String password,
@@ -33,29 +47,34 @@ public class LoginController {
 
         UserModel user = userService.findByUsername(username);
 
-        if (user != null && user.getPassword().equals(password)) {
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
             session.setAttribute("loggedInUser", user);
-            return "redirect:/dashboard"; // after login go to dashboard
+            return "redirect:/dashboard";
         } else {
             model.addAttribute("error", "Invalid username or password");
             return "login";
         }
+
     }
 
-    // logout
+    // Logout
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate();
+        session.invalidate(); // clear session
         return "redirect:/login?logout=true";
     }
 
-    // show signup page
+    // Show signup page
     @GetMapping("/signup")
-    public String showSignupPage() {
+    public String showSignupPage(HttpSession session) {
+        if (session.getAttribute("loggedInUser") != null) {
+            // Already logged in, redirect to dashboard
+            return "redirect:/dashboard";
+        }
         return "signup"; // signup.jsp
     }
 
-    // process signup
+    // Process signup
     @PostMapping("/signup")
     public String registerUser(@RequestParam String username,
                                @RequestParam String email,
@@ -75,12 +94,10 @@ public class LoginController {
         UserModel newUser = new UserModel();
         newUser.setUsername(username);
         newUser.setEmail(email);
-        newUser.setPassword(passwordEncoder.encode(password)); //password encoded
+        newUser.setPassword(passwordEncoder.encode(password)); // password encoded
         userService.registerUser(newUser);
 
         model.addAttribute("success", "Registration successful! Please login.");
         return "login";
     }
-
 }
-
