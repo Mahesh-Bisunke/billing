@@ -49,7 +49,7 @@
             e.preventDefault();
             setActive($(this));
             $("#main-content").load("/dashboardContent", function () {
-                history.pushState(null, "", "/#/dashboard");
+                history.pushState(null, "", "/dashboard");
             });
         });
 
