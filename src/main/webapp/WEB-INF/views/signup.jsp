@@ -5,57 +5,57 @@
     <title>Signup</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
 
-<div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-sm">
-    <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">Create Account</h2>
-
-    <!-- Error Toast -->
-    <c:if test="${not empty error}">
-        <div id="toast-error" class="flex items-center w-full max-w-xs p-4 mb-4 space-x-4 rtl:space-x-reverse
-             text-red-600 bg-white divide-x rtl:divide-x-reverse divide-gray-200
-             rounded-lg shadow-sm dark:text-red-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
-            <svg class="w-5 h-5 text-red-600 dark:text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M9 1l8 16H1L9 1zm0 12h0m0-4h0"/>
-            </svg>
-            <div class="ps-4 text-sm font-normal">${error}</div>
+<div class="flex w-full max-w-4xl shadow-2xl rounded-xl overflow-hidden">
+    <!-- Left panel: Dashboard accent -->
+    <div class="hidden md:flex md:w-1/2 bg-gradient-to-b from-gray-800 to-gray-900 items-center justify-center">
+        <div class="text-center text-white px-6">
+            <h1 class="text-4xl font-bold mb-4">Join Us!</h1>
+            <p class="text-gray-300">Sign up to access your dashboard, manage products, customers, and transactions easily.</p>
+<%--            <img src="/resources/images/dashboard-illustration.svg" alt="Dashboard Illustration" class="mt-6 w-3/4 mx-auto">--%>
         </div>
-    </c:if>
+    </div>
 
-    <!-- Success Toast -->
-    <c:if test="${not empty success}">
-        <div id="toast-success" class="flex items-center w-full max-w-xs p-4 mb-4 space-x-4 rtl:space-x-reverse
-             text-green-600 bg-white divide-x rtl:divide-x-reverse divide-gray-200
-             rounded-lg shadow-sm dark:text-green-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
-            <svg class="w-5 h-5 text-green-600 dark:text-green-500 rotate-45" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="m9 17 8 2L9 1 1 19l8-2Zm0 0V9"/>
-            </svg>
-            <div class="ps-4 text-sm font-normal">${success}</div>
-        </div>
-    </c:if>
+    <!-- Right panel: Signup card -->
+    <div class="w-full md:w-1/2 bg-gray-800 text-gray-100 p-8 flex flex-col justify-center">
+        <h2 class="text-3xl font-bold text-center mb-6 text-white">Create Account</h2>
 
-    <!-- Signup Form -->
-    <form action="/signup" method="post" class="space-y-4">
-        <input type="text" name="username" placeholder="Username"
-               class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-green-300"/>
+        <!-- Error message -->
+        <c:if test="${not empty error}">
+            <div class="bg-red-700 bg-opacity-20 text-red-400 px-4 py-2 rounded mb-4 text-center">
+                    ${error}
+            </div>
+        </c:if>
 
-        <input type="email" name="email" placeholder="Email"
-               class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-green-300"/>
+        <!-- Success message -->
+        <c:if test="${not empty success}">
+            <div class="bg-green-700 bg-opacity-20 text-green-400 px-4 py-2 rounded mb-4 text-center">
+                    ${success}
+            </div>
+        </c:if>
 
-        <input type="password" name="password" placeholder="Password"
-               class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-green-300"/>
+        <!-- Signup Form -->
+        <form action="/signup" method="post" class="space-y-4">
+            <input type="text" name="username" placeholder="Username"
+                   class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"/>
 
-        <button type="submit"
-                class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
-            Sign Up
-        </button>
-    </form>
+            <input type="email" name="email" placeholder="Email"
+                   class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"/>
 
-    <p class="text-center text-sm mt-4">
-        Already have an account? <a href="/login" class="text-blue-600 hover:underline">Login</a>
-    </p>
+            <input type="password" name="password" placeholder="Password"
+                   class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+
+            <button type="submit"
+                    class="w-full bg-blue-700 hover:bg-blue-800 py-2 rounded-lg font-semibold transition">
+                Sign Up
+            </button>
+        </form>
+
+        <p class="text-center text-gray-300 mt-4 text-sm">
+            Already have an account? <a href="/login" class="text-blue-400 hover:underline">Login</a>
+        </p>
+    </div>
 </div>
 
 </body>

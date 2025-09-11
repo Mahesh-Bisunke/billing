@@ -79,15 +79,17 @@ public ResponseEntity<?> createCustomer(@Valid @RequestBody CustomerDTO customer
 
 
 
-    @GetMapping("/read")
+    @GetMapping("/customers")
     public String getAllCustomers(Model model) {
         List<CustomerModel> customers = customerService.getAllCustomers();
-        model.addAttribute("customers", customers); // send to JSP
-        return "allCustomers"; // JSP name
+        model.addAttribute("customers", customers);
+        model.addAttribute("customer", new CustomerModel()); // ✅ add empty customer
+        return "allCustomers";
     }
 
 
-    @PostMapping("/update")
+//making putmapping for update
+    @PostMapping ("/update")
     @ResponseBody
     public String updateCustomer(@RequestParam Long id,
                                  @RequestParam String name,
@@ -105,10 +107,10 @@ public ResponseEntity<?> createCustomer(@Valid @RequestBody CustomerDTO customer
 
 
     @PostMapping("/delete/{id}")
-    @ResponseBody
+
     public String deleteCustomer(@PathVariable long id) {
         customerService.deleteCustomer(id);
-        return "Customer with id  "+id +"  Deleted";
+        return "redirect:/api/customers";
     }
 
 
